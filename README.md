@@ -2,14 +2,13 @@
 This web crawler was originally built for CS 485-002 (Web Crawling Techniques and Applications) at the University of Kentucky under Dr. 
 Brent Seales, with the purpose of searching, ranking, and indexing the engineering subdomain. This system has crawled crawled over 3000 pages in the engineering subdomain, tracking over 500,000 links between web pages. EngiQuery ranks and sorts these web pages based on a query supplied by the user.
 
-It has since been co-opted 
+It has since been co-opted to be a search engine for all of the UK domain by improving the original structure for crawling, indexing, and searching to be more robost.
 
 
 ## Files
   * pagecrawler.py - My implementation for a web crawler. Right now, this crawler is semi-tailored towards engr.uky.edu and the issues that arose while dealing with that particular domain. 
   
-  * pagerank.py - My implementation for Google's PageRank algorithm. This implementation takes an adjacency matrix representation of a web  
-  link graph and calculates the PageRank vector using the Power Method/Iteration. 
+  * pagerank.py - My implementation for Google's PageRank algorithm. This implementation takes an adjacency matrix representation of a web link graph and calculates the PageRank vector using the Power Method/Iteration. 
   
   
 ## Future Improvements
