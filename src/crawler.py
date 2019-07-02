@@ -106,6 +106,8 @@ class ukySpider():
                 self.report(start_time=start_time)
                 batch_crawl_num = 0 #Reset counter for number of pages crawled this batch.
 
+        self.report(start_time=start_time)
+
         
 
 
