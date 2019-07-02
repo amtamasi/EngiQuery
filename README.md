@@ -1,8 +1,13 @@
 # EngiQuery
-This web crawler was originally built for CS 485-002 (Web Crawling Techniques and Applications) at the University of Kentucky under Dr. 
-Brent Seales, with the purpose of searching, ranking, and indexing the engineering subdomain. This system has crawled crawled over 3000 pages in the engineering subdomain, tracking over 500,000 links between web pages. EngiQuery ranks and sorts these web pages based on a query supplied by the user.
+EngiQuery is a search engine built for the University of Kentucky's web domain.    
 
-It has since been co-opted to be a search engine for all of the UK domain by improving the original structure for crawling, indexing, and searching to be more robost.
+## Motivation
+This web crawler was originally built for CS 485-002 (Web Crawling Techniques and Applications) at the University of Kentucky under Dr. 
+Brent Seales, with the purpose of indexing, ranking, and searching the engineering subdomain. This initial system crawled over 3000 pages in the engineering subdomain, tracking over 500,000 links between web pages. EngiQuery ranked these web documents and returned relevant pages based on a query supplied by the user.  
+
+It has since been co-opted to be a search engine for all of the UK domain by improving the original structure for crawling, indexing, and searching. I really enjoyed this project during the class, and wanted to expand upon it. I had the highest reported peak crawl speed in the class, but it was only around 7 pages crawled per second. I wanted to build on that to make it faster and more generalized, so that I could quickly crawl any website of interest (but particularly the UK domain).  
+
+I was also interested in learning about multi-threading, and felt this would be a good opportunity to do so.
 
 
 ## Files
