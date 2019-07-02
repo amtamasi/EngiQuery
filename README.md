@@ -13,8 +13,21 @@ I was also interested in learning about multi-threading, and felt this would be 
 ## Files
   * pagecrawler.py - My implementation for a web crawler. Right now, this crawler is semi-tailored towards engr.uky.edu and the issues that arose while dealing with that particular domain. 
   
-  * pagerank.py - My implementation for Google's PageRank algorithm. This implementation takes an adjacency matrix representation of a web link graph and calculates the PageRank vector using the Power Method/Iteration. 
-  
+  * pagerank.py - My implementation for Google's PageRank algorithm. This implementation takes an adjacency matrix representation of a web link graph and calculates the PageRank vector using the Power Method/Iteration.  
+    
+## Usage
+To use this crawling framework for a web domain you are interested in, start by cloning this project into a folder and navigate to that folder.  
+
+Then, you will want to open the crawler.py file to edit it to your liking in your IDE of choice. Fill in the scrapeInfo() function in the Spider() class so that it saves/returns the information you are interested in.  
+*Enter screenshot of where to change*
+
+Then, open the main.py file to edit the 'start_url' variable. This variable stores the URL (uniform resource locator) at the top of the domain you're interested in. If this is not the top level URL (i.e. the homepage), the crawler not crawl pages above it in the web domain's file hierarchy. This is because the crawler uses this initial url as the "root", basing all other urls off of start_url.  
+*Enter screenshot of where to change*
+
+Finally, run main.py!
+*Show command, samples of it successfully running*
+
+## Installation
   
 ## Future Improvements
   1. Implement "politeness". Crawler should respect robots.txt files.
