@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urljoin, urlparse
 
 
-class ukySpider():
+class Crawler():
     """
     This class governs how we crawl the domain
     """
