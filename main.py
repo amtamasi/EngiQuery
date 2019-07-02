@@ -14,9 +14,11 @@ if __name__ == '__main__':
     print("Running...")
 
     start_url = "http://www.engr.uky.edu/"
+    start_url = "https://blog.acolyer.org/"
+    #start_url = "https://www.stanford.edu/"
     start = time.time() #Start our timer to measure how long the crawl takes.
 
-    spider = ukySpider(start_url, url_limit=10000, batch_interval=20)
+    spider = ukySpider(start_url, url_limit=10000, batch_interval=1000, num_workers=1)
 
     print("Starting crawl...")
     spider.startCrawl()

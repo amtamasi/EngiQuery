@@ -12,6 +12,7 @@ Notes:
 import time
 import os
 import requests
+from bs4 import BeautifulSoup
 from queue import Queue, Empty
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urljoin, urlparse
@@ -21,7 +22,7 @@ class ukySpider():
     """
     This class governs how we crawl the domain
     """
-    def __init__(self, start_url=None, url_limit=50000, batch_interval=1000, num_workers=20):
+    def __init__(self, start_url=None, url_limit=500000, batch_interval=1000, num_workers=5):
         """
         Parameters:
             start_url (str): The url of the website we are going to crawl.
@@ -70,26 +71,42 @@ class ukySpider():
     def startCrawl(self):
         """
         Kicks off the original crawl.
-
         Variables:
             job (Future): The current job for a single url to crawl.
+            target_url (string): The current url we are trying to scrape.
+            current_crawl_num (int): A counter to track how many total pages we have scraped so far.
+            batch_crawl_num (int): A counter to track how many pages we scraped in this batch.
         """
+        start_time = time.time()
         current_crawl_num = 0
-        self.crawl(self.start_url, current_crawl_num)
+        batch_crawl_num = 0
 
-        while True:
+
+        while current_crawl_num < self.url_limit:
             try:
-                target_url = self.work_pool.get(timeout=45)
+                target_url = self.work_pool.get(timeout=5)
+                print("Now Crawling: {}".format(target_url))
                 if target_url not in self.closed_pool:
                     self.closed_pool.add(target_url)
-                    job = self.pool.submit(self.crawl, target_url)
+                    job = self.pool.submit(self.scrapePage, target_url)
                     job.add_done_callback(self.postCrawlCallback)
+                print("FInished crawling: {}".format(target_url))
 
             except Empty:
                 return
             except Exception as e:
+                print("Error at {}".format(target_url))
                 print(e)
+                print()
                 continue
+
+            current_crawl_num += 1
+            batch_crawl_num += 1
+            if(current_crawl_num % self.batch_interval == 0):
+                self.report(start_time=start_time)
+                batch_crawl_num = 0 #Reset counter for number of pages crawled this batch.
+
+        
 
 
     def crawl(self, url, current_crawl_num):
@@ -109,29 +126,71 @@ class ukySpider():
         """
         Add all unique links to the work pool to be crawled.
         Parameters:
-            html (): 
+            html (Response.text): The text HTML of the url scraped.
         Returns:
             None.
         """
 
+        soup = BeautifulSoup(html, 'lxml')
+        links = soup.find_all('a', href=True)
+        for link in links:
+            url = link['href']
+            print("LINK[HREF]: {}".format(url))
+            print()
+            if url.startswith('/') or url.startswith(self.start_url):
+                url = urljoin(self.start_url, url)
+                print("URLS TO ADD: {}".format(url))
+                print()
+                if url not in self.closed_pool:
+                    print("\t Adding this url: {}".format(url))
+                    print()
+                    self.work_pool.put(url)
+
+
     def scrapeInfo(self, html):
         """
-
+        Scrape the information you want from this webpage.
         Parameters:
-            html (): 
+            html (Response.text): The text HTML of the url scraped.
+        Returns:
+
         """
+
+        return
+
+    def scrapePage(self, url):
+        """
+        Scrape this url and return the HTTP response. If it can't get the url, print out an error.
+        Parameters:
+            url (string): The url to be scraped.
+        Returns:
+            response (Requests Response): The HTTP response object of this url.
+        """
+
+        try:
+            response = requests.get(url, timeout=3)
+            return response
+        except requests.RequestException as e:
+            #print("Request Error at {}".format(url))
+            print("Request Error")
+            print(e)
+            print()
+            return 
 
     def postCrawlCallback(self, res):
         """
-        Adds the 
+        Called to 'complete the job' for a particular url. This function is called on that url's response to
+        ensure it was a successful response and then parse the url's links and scrape its relevant content.
         Parameters:
-            res (Requests Response): 
+            res (Requests Response): The response received from the url we are scraping.
+        Returns:
+            None.
         """
 
         result = res.result()
         if result and result.status_code == 200:
             self.parseLinks(result.text)
-            self.scrapeInfo(result.text)
+            self.scrapePage(result.text)
 
     def report(self, start_time=None):
         """
@@ -152,11 +211,12 @@ class ukySpider():
             time_decimal = 3
 
             print() #Buffer space
-            print("----------UKY Spider----------")
+            print("----------UKY Spider--------------------")
             print("Number of (total) pages crawled:", len(self.closed_pool))
             print("Number of pages crawled this batch:", self.batch_interval)
             #print("Number of 'special links':", len(self.special_urls))
             print("Time since started: " + str(round(current_time - start_time, time_decimal)) + " seconds")
+            print("----------------------------------------")
             print('\n'*5) #Buffer space
 
 
