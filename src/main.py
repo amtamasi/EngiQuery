@@ -21,8 +21,6 @@ if __name__ == '__main__':
     print("Starting crawl...")
     spider.startCrawl()
     print("Finished crawling!")
-    spider.report(start)
-
 
 
 
