@@ -90,7 +90,7 @@ class Crawler():
                     self.closed_pool.add(target_url)
                     job = self.pool.submit(self.scrapePage, target_url)
                     job.add_done_callback(self.postCrawlCallback)
-                print("FInished crawling: {}".format(target_url))
+                print("Finished crawling: {}".format(target_url))
 
             except Empty:
                 return
@@ -222,6 +222,5 @@ class Crawler():
             print('\n'*5) #Buffer space
 
 
+
         
-
-
