@@ -23,7 +23,7 @@ To use this crawling framework for a web domain you are interested in, start by 
 Then, you will want to open the crawler.py file to edit it to your liking in your IDE of choice. Fill in the scrapeInfo() function in the Spider() class so that it saves/returns the information you are interested in.  
 ` Enter screenshot of where to change`
 
-Then, open the main.py file to edit the 'start_url' variable. This variable stores the URL (uniform resource locator) at the top of the domain you're interested in. If this is not the top level URL (i.e. the homepage), the crawler not crawl pages above it in the web domain's file hierarchy. This is because the crawler uses this initial url as the "root", basing all other urls off of start_url.  
+Then, open the main.py file to edit the 'start_url' variable. This variable stores the URL (uniform resource locator) at the top of the domain you're interested in. If this is not the top level URL (i.e. the homepage), the crawler may not crawl all the pages of interest. This is because the crawler uses this initial url as the "root", basing all other urls off of start_url. So, it won't crawl pages above it in a web domain's file hierarchy.    
 ` Enter screenshot of where to change`
 
 Finally, run main.py!  
