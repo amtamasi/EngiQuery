@@ -16,7 +16,9 @@ I was also interested in learning about multi-threading, and felt this would be 
   * /data/ - This folder contains any (small-sized) saved data for this application. This does *not* include the main database, but you can move this database to this folder if you wish.
     
 ## Usage
-To use this crawling framework for a web domain you are interested in, start by cloning this project into a folder and navigate to that folder.  
+To use this crawling framework for a web domain you are interested in, start by cloning this project into a folder and navigate to that folder.    
+` git clone https://github.com/amtamasi/EngiQuery.git`  
+` cd EngiQuery`
 
 Then, you will want to open the crawler.py file to edit it to your liking in your IDE of choice. Fill in the scrapeInfo() function in the Spider() class so that it saves/returns the information you are interested in.  
 ` Enter screenshot of where to change`
@@ -24,12 +26,13 @@ Then, you will want to open the crawler.py file to edit it to your liking in you
 Then, open the main.py file to edit the 'start_url' variable. This variable stores the URL (uniform resource locator) at the top of the domain you're interested in. If this is not the top level URL (i.e. the homepage), the crawler not crawl pages above it in the web domain's file hierarchy. This is because the crawler uses this initial url as the "root", basing all other urls off of start_url.  
 ` Enter screenshot of where to change`
 
-Finally, run main.py!
-` Show command, samples of it successfully running`
+Finally, run main.py!  
+` python main.py`  
+` show samples of running correctly`
 
 ## Installation
 Clone this repository to your local machine.  
-` show command` 
+` git clone https://github.com/amtamasi/EngiQuery.git` 
   
 ## Future Improvements
   1. Implement "politeness". Crawler should respect robots.txt files.
