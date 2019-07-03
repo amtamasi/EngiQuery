@@ -155,7 +155,7 @@ class Crawler():
         Parameters:
             html (Response.text): The text HTML of the url scraped.
         Returns:
-
+            None. Save the information you scrape to a database of some sort.
         """
 
         return
