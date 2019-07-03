@@ -108,21 +108,6 @@ class Crawler():
 
         self.report(start_time=start_time)
 
-        
-
-
-    def crawl(self, url, current_crawl_num):
-        """
-        Crawl this url domain.
-        Parameters:
-            url (str): The url that this function will crawl and download information for.
-            current_crawl_num = The number of pages that have been crawled so far.
-        Returns:
-            None.        
-        """
-
-
-        current_crawl_num += 1
 
     def parseLinks(self, html):
         """
