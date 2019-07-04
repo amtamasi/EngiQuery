@@ -109,6 +109,7 @@ class Crawler():
         self.report(start_time=start_time)
 
 
+
     def parseLinks(self, html):
         """
         Add all unique links to the work pool to be crawled.
