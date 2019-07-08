@@ -50,7 +50,7 @@ class Crawler():
         self.work_pool.put(start_url)
 
 
-    def save(self, file_name):
+    def save(self, file_name='../save.txt'):
         """
         Save the state of the crawler object. 
         Parameters:
@@ -58,6 +58,11 @@ class Crawler():
         Returns:
             None. Creates file and saves to it.
         """
+
+        with open(file_name, 'w') as f:
+            for item in list(self.closed_pool):
+                f.write("{}\n".format(item))
+
 
     def load(self, file_name):
         """
@@ -77,6 +82,7 @@ class Crawler():
             current_crawl_num (int): A counter to track how many total pages we have scraped so far.
             batch_crawl_num (int): A counter to track how many pages we scraped in this batch.
         """
+        print("Starting crawl...")
         start_time = time.time()
         current_crawl_num = 0
         batch_crawl_num = 0
@@ -84,20 +90,26 @@ class Crawler():
 
         while current_crawl_num < self.url_limit:
             try:
-                target_url = self.work_pool.get(timeout=5)
-                print("Now Crawling: {}".format(target_url))
+                target_url = self.work_pool.get(timeout=60)
+                #print("Now Crawling: {}".format(target_url))
                 if target_url not in self.closed_pool:
                     self.closed_pool.add(target_url)
                     job = self.pool.submit(self.scrapePage, target_url)
                     job.add_done_callback(self.postCrawlCallback)
-                print("Finished crawling: {}".format(target_url))
+                #print("Finished crawling: {}".format(target_url))
 
             except Empty:
+                print("The work queue is now empty!")
+                print("Finished crawling!")
+                self.save()
+                self.report(start_time=start_time)
                 return
+
             except Exception as e:
-                print("Error at {}".format(target_url))
-                print(e)
-                print()
+                #print("Error at {}".format(target_url))
+                #print("Error")
+                #print(e)
+                #print()
                 continue
 
             current_crawl_num += 1
@@ -105,7 +117,9 @@ class Crawler():
             if(current_crawl_num % self.batch_interval == 0):
                 self.report(start_time=start_time)
                 batch_crawl_num = 0 #Reset counter for number of pages crawled this batch.
+                self.save()
 
+        self.save()
         self.report(start_time=start_time)
 
 
@@ -123,15 +137,15 @@ class Crawler():
         links = soup.find_all('a', href=True)
         for link in links:
             url = link['href']
-            print("LINK[HREF]: {}".format(url))
-            print()
-            if url.startswith('/') or url.startswith(self.start_url):
+            #print("LINK[HREF]: {}".format(url))
+            #print()
+            if url.startswith('/') or url.startswith(self.start_url) or self.start_url in url:
                 url = urljoin(self.start_url, url)
-                print("URLS TO ADD: {}".format(url))
-                print()
+                #print("URLS TO ADD: {}".format(url))
+                #print()
                 if url not in self.closed_pool:
-                    print("\t Adding this url: {}".format(url))
-                    print()
+                    #print("\t Adding this url: {}".format(url))
+                    #print()
                     self.work_pool.put(url)
 
 
@@ -160,9 +174,9 @@ class Crawler():
             return response
         except requests.RequestException as e:
             #print("Request Error at {}".format(url))
-            print("Request Error")
-            print(e)
-            print()
+            #print("Request Error")
+            #print(e)
+            #print()
             return 
 
     def postCrawlCallback(self, res):
@@ -201,6 +215,7 @@ class Crawler():
             print() #Buffer space
             print("----------UKY Spider--------------------")
             print("Number of (total) pages crawled:", len(self.closed_pool))
+            print("Current size of our work queue:", self.work_pool.qsize())
             print("Number of pages crawled this batch:", self.batch_interval)
             #print("Number of 'special links':", len(self.special_urls))
             print("Time since started: " + str(round(current_time - start_time, time_decimal)) + " seconds")
