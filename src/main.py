@@ -9,18 +9,27 @@ Description:
 #Imports
 from crawler import Crawler
 
-if __name__ == '__main__':
+def main():
     print("Running...")
 
     start_url = "http://www.engr.uky.edu/"
-    start_url = "https://blog.acolyer.org/"
+    #start_url = "https://blog.acolyer.org/"
     #start_url = "https://www.stanford.edu/"
+    #start_url = "https://web.mit.edu"
+    start_url = "https://terraria.gamepedia.com/"
 
-    spider = Crawler(start_url, url_limit=10000, batch_interval=1000, num_workers=1)
+    spider = Crawler(start_url, url_limit=2000000, batch_interval=5000, num_workers=8)
 
-    print("Starting crawl...")
+    
     spider.startCrawl()
-    print("Finished crawling!")
+    
+    print("Pages crawled:", len(spider.closed_pool))
+    print("Remaining left in queue:", spider.work_pool.qsize())
+
+    return
+
+if __name__ == '__main__':
+    main()
 
 
 
